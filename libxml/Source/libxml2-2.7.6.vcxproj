@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="RTM|Win32">
+      <Configuration>RTM</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RTM|x64">
+      <Configuration>RTM</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{443CA0F3-B4B4-4201-9B3B-727F39984B0E}</ProjectGuid>
+    <SccProjectName>SAK</SccProjectName>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccProvider>SAK</SccProvider>
+    <Keyword>MakeFileProj</Keyword>
+    <ProjectName>libxml2</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RTM|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RTM|x64'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='RTM|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\RxModuleData.props" />
+    <Import Project="..\..\..\..\_global\PropSheets\RxStdTypeSharedDll.props" />
+    <Import Project="..\..\..\..\_global\PropSheets\RxStdPaths.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='RTM|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\RxModuleData.props" />
+    <Import Project="..\..\..\..\_global\PropSheets\RxStdTypeSharedDll.props" />
+    <Import Project="..\..\..\..\_global\PropSheets\RxStdPaths.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RTM|Win32'">
+    <NMakePreprocessorDefinitions>
+    </NMakePreprocessorDefinitions>
+    <NMakeBuildCommandLine>echo on
+call "$(VCInstallDir)vcvarsall.bat" $(PlatformShortName)
+echo on
+cd $(ProjectDir)win32
+echo If cscript call does not work, open an admin command prompt
+echo and type 'assoc .js=JSFile'.
+cscript configure.js iconv=yes debug=no static=yes zlib=yes vcmanifest=yes lib=$(RxLibDir) cruntime=/MD
+nmake /f Makefile.msvc ARCH=$(RxPlatform) VER=$(RxModVerShort) TOOLSET=$(RxToolset)
+nmake /f Makefile.msvc install-libs ARCH=$(RxPlatform) VER=$(RxModVerShort) TOOLSET=$(RxToolset)
+
+xcopy "$(ProjectDir)\win32\bin\*.dll" "$(RxSharedDir)\bin\"  /R /Y /Q /EXCLUDE:$(RxGlobalDir)Exclude.txt
+xcopy "$(ProjectDir)\win32\lib\*.lib" "$(RxLibDir)"  /R /Y /Q /EXCLUDE:$(RxGlobalDir)Exclude.txt
+xcopy "$(ProjectDir)\win32\include\libxml\*.h" "$(RxIncludeDir)$(RxModName)-$(RxModVerShort)\libxml\"  /R /Y /Q /EXCLUDE:$(RxGlobalDir)Exclude.txt
+
+xcopy "$(ProjectDir)\win32\bin\*.dll" "$(RxDistModOutDir)"  /R /Y /Q /EXCLUDE:$(RxGlobalDir)Exclude.txt
+xcopy "$(ProjectDir)\win32\lib\*.lib" "$(RxDistModLibDir)"  /R /Y /Q /EXCLUDE:$(RxGlobalDir)Exclude.txt
+xcopy "$(ProjectDir)\win32\include\libxml\*.h" "$(RxDistModDir)$(RxModName)-$(RxModVerShort)\_include\$(RxModName)-$(RxModVerShort)\libxml\"  /R /Y /Q /EXCLUDE:$(RxGlobalDir)Exclude.txt</NMakeBuildCommandLine>
+    <NMakeCleanCommandLine>echo on
+call "$(VCInstallDir)vcvarsall.bat" $(PlatformShortName)
+echo on
+cd $(ProjectDir)win32
+cscript configure.js
+nmake /f Makefile.msvc clean</NMakeCleanCommandLine>
+    <IncludePath>$(RxIncludeDir)$(RxModName)-$(RxModVerA).$(RxModVerB)\zlib;$(RxIncludeDir)$(RxModName)-$(RxModVerA).$(RxModVerB)\libiconv;$(RxIncludeDir);$(IncludePath)</IncludePath>
+    <LibraryPath>$(RxLibDir);$(LibraryPath)</LibraryPath>
+    <NMakeReBuildCommandLine>echo on
+call "$(VCInstallDir)vcvarsall.bat" $(PlatformShortName)
+echo on
+cd $(ProjectDir)win32
+cscript configure.js iconv=yes debug=no static=yes zlib=yes vcmanifest=yes lib=$(RxLibDir) cruntime=/MD
+nmake /f Makefile.msvc rebuild ARCH=$(RxPlatform) VER=$(RxModVerShort) TOOLSET=$(RxToolset)
+nmake /f Makefile.msvc install-libs ARCH=$(RxPlatform) VER=$(RxModVerShort) TOOLSET=$(RxToolset)
+
+xcopy "$(ProjectDir)\win32\bin\*.dll" "$(RxSharedDir)\bin\"  /R /Y /Q /EXCLUDE:$(RxGlobalDir)Exclude.txt
+xcopy "$(ProjectDir)\win32\lib\*.lib" "$(RxLibDir)"  /R /Y /Q /EXCLUDE:$(RxGlobalDir)Exclude.txt
+xcopy "$(ProjectDir)\win32\include\libxml\*.h" "$(RxIncludeDir)$(RxModName)-$(RxModVerShort)\libxml\"  /R /Y /Q /EXCLUDE:$(RxGlobalDir)Exclude.txt
+
+xcopy "$(ProjectDir)\win32\bin\*.dll" "$(RxDistModOutDir)"  /R /Y /Q /EXCLUDE:$(RxGlobalDir)Exclude.txt
+xcopy "$(ProjectDir)\win32\lib\*.lib" "$(RxDistModLibDir)"  /R /Y /Q /EXCLUDE:$(RxGlobalDir)Exclude.txt
+xcopy "$(ProjectDir)\win32\include\libxml\*.h" "$(RxDistModDir)$(RxModName)-$(RxModVerShort)\_include\$(RxModName)-$(RxModVerShort)\libxml\"  /R /Y /Q /EXCLUDE:$(RxGlobalDir)Exclude.txt
+</NMakeReBuildCommandLine>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RTM|x64'">
+    <NMakePreprocessorDefinitions />
+    <NMakeBuildCommandLine>echo on
+call "$(VCInstallDir)vcvarsall.bat" $(PlatformShortName)
+echo on
+cd $(ProjectDir)win32
+echo If cscript call does not work, open an admin command prompt
+echo and type 'assoc .js=JSFile'.
+cscript configure.js iconv=yes debug=no static=yes zlib=yes vcmanifest=yes lib=$(RxLibDir) cruntime=/MD
+nmake /f Makefile.msvc ARCH=$(RxPlatform) VER=$(RxModVerShort) TOOLSET=$(RxToolset)
+nmake /f Makefile.msvc install-libs ARCH=$(RxPlatform) VER=$(RxModVerShort) TOOLSET=$(RxToolset)
+
+xcopy "$(ProjectDir)\win32\bin\*.dll" "$(RxSharedDir)\bin\"  /R /Y /Q /EXCLUDE:$(RxGlobalDir)Exclude.txt
+xcopy "$(ProjectDir)\win32\lib\*.lib" "$(RxLibDir)"  /R /Y /Q /EXCLUDE:$(RxGlobalDir)Exclude.txt
+xcopy "$(ProjectDir)\win32\include\libxml\*.h" "$(RxIncludeDir)$(RxModName)-$(RxModVerShort)\libxml\"  /R /Y /Q /EXCLUDE:$(RxGlobalDir)Exclude.txt
+
+xcopy "$(ProjectDir)\win32\bin\*.dll" "$(RxDistModOutDir)"  /R /Y /Q /EXCLUDE:$(RxGlobalDir)Exclude.txt
+xcopy "$(ProjectDir)\win32\lib\*.lib" "$(RxDistModLibDir)"  /R /Y /Q /EXCLUDE:$(RxGlobalDir)Exclude.txt
+xcopy "$(ProjectDir)\win32\include\libxml\*.h" "$(RxDistModDir)$(RxModName)-$(RxModVerShort)\_include\$(RxModName)-$(RxModVerShort)\libxml\"  /R /Y /Q /EXCLUDE:$(RxGlobalDir)Exclude.txt</NMakeBuildCommandLine>
+    <NMakeCleanCommandLine>echo on
+call "$(VCInstallDir)vcvarsall.bat" $(PlatformShortName)
+echo on
+cd $(ProjectDir)win32
+cscript configure.js
+nmake /f Makefile.msvc clean</NMakeCleanCommandLine>
+    <IncludePath>$(RxIncludeDir)$(RxModName)-$(RxModVerA).$(RxModVerB)\zlib;$(RxIncludeDir)$(RxModName)-$(RxModVerA).$(RxModVerB)\libiconv;$(RxIncludeDir);$(IncludePath)</IncludePath>
+    <LibraryPath>$(RxLibDir);$(LibraryPath)</LibraryPath>
+    <NMakeReBuildCommandLine>echo on
+call "$(VCInstallDir)vcvarsall.bat" $(PlatformShortName)
+echo on
+cd $(ProjectDir)win32
+cscript configure.js iconv=yes debug=no static=yes zlib=yes vcmanifest=yes lib=$(RxLibDir) cruntime=/MD
+nmake /f Makefile.msvc rebuild ARCH=$(RxPlatform) VER=$(RxModVerShort) TOOLSET=$(RxToolset)
+nmake /f Makefile.msvc install-libs ARCH=$(RxPlatform) VER=$(RxModVerShort) TOOLSET=$(RxToolset)
+
+xcopy "$(ProjectDir)\win32\bin\*.dll" "$(RxSharedDir)\bin\"  /R /Y /Q /EXCLUDE:$(RxGlobalDir)Exclude.txt
+xcopy "$(ProjectDir)\win32\lib\*.lib" "$(RxLibDir)"  /R /Y /Q /EXCLUDE:$(RxGlobalDir)Exclude.txt
+xcopy "$(ProjectDir)\win32\include\libxml\*.h" "$(RxIncludeDir)$(RxModName)-$(RxModVerShort)\libxml\"  /R /Y /Q /EXCLUDE:$(RxGlobalDir)Exclude.txt
+
+xcopy "$(ProjectDir)\win32\bin\*.dll" "$(RxDistModOutDir)"  /R /Y /Q /EXCLUDE:$(RxGlobalDir)Exclude.txt
+xcopy "$(ProjectDir)\win32\lib\*.lib" "$(RxDistModLibDir)"  /R /Y /Q /EXCLUDE:$(RxGlobalDir)Exclude.txt
+xcopy "$(ProjectDir)\win32\include\libxml\*.h" "$(RxDistModDir)$(RxModName)-$(RxModVerShort)\_include\$(RxModName)-$(RxModVerShort)\libxml\"  /R /Y /Q /EXCLUDE:$(RxGlobalDir)Exclude.txt
+</NMakeReBuildCommandLine>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="readme.txt" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
